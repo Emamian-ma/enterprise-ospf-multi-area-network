@@ -1,0 +1,26 @@
+hostname R2
+no ip domain-lookup
+
+interface g0/0
+ description LINK_TO_R1
+ ip address 10.0.12.2 255.255.255.252
+ no shutdown
+
+interface g0/1
+ description LINK_TO_R4
+ ip address 10.0.24.1 255.255.255.252
+ no shutdown
+
+interface loopback0
+ ip address 2.2.2.2 255.255.255.255
+
+router ospf 1
+ router-id 2.2.2.2
+
+ network 10.0.12.0 0.0.0.3 area 0
+ network 10.0.24.0 0.0.0.3 area 10
+ network 2.2.2.2 0.0.0.0 area 0
+
+ area 10 range 192.168.10.0 255.255.254.0
+
+ passive-interface loopback0
